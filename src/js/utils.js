@@ -1,6 +1,6 @@
 /**
  * @author: Karthik VJ
-**/
+ **/
 
 var Utils = new function()
 {
@@ -18,9 +18,9 @@ var Utils = new function()
 
         var list = stringValue.split('&');
         //console.log("list.length, " + list.length);
-        for(var i = 0; i < list.length; i++)
+        for (var i = 0; i < list.length; i++)
         {
-            if(list[i].search(property) == 0)
+            if (list[i].search(property) == 0)
             {
                 return list[i].replace(property, "");
             }

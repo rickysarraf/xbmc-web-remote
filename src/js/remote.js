@@ -2,7 +2,7 @@
  * @author: Karthik VJ
  */
 
-if(ENABLE_CONSOLE == false)
+if (ENABLE_CONSOLE == false)
 {
     var console = console || {};
     console.log = function() {};
@@ -11,24 +11,24 @@ if(ENABLE_CONSOLE == false)
 
 var Keyboard = function()
 {
-	this.isDown = false;
+    this.isDown = false;
 
     /**
      * @type {Keyboard}
      */
-	var thisObject = this;
-	
-	this.init = function()
-	{
-		document.onkeydown = onKeyDown;
-		document.onkeyup = onKeyUp;
-		
-	};
-	
-	var onKeyUp = function(event)
-	{
-		console.log("key up");
-		thisObject.isDown = false;
+    var thisObject = this;
+
+    this.init = function()
+    {
+        document.onkeydown = onKeyDown;
+        document.onkeyup = onKeyUp;
+
+    };
+
+    var onKeyUp = function(event)
+    {
+        console.log("key up");
+        thisObject.isDown = false;
         $("#rightArrow").removeClass("right_arrow_active");
         $("#selectButton").removeClass("select_active");
         $("#leftArrow").removeClass("left_arrow_active");
@@ -38,44 +38,44 @@ var Keyboard = function()
 
         event.preventDefault();
 
-	};
+    };
 
-	var onKeyDown = function(event)
-	{
-        if(thisObject.isDown)
-		{
+    var onKeyDown = function(event)
+    {
+        if (thisObject.isDown)
+        {
             console.log("key is down!");
-			return;
-		}
+            return;
+        }
 
         thisObject.isDown = true;
         var isValidKey = false;
 
-		console.log("key code = " + event.keyCode + ", ctrl = " + event.ctrlKey);
-		var isCtrl = event.ctrlKey || event.metaKey;
+        console.log("key code = " + event.keyCode + ", ctrl = " + event.ctrlKey);
+        var isCtrl = event.ctrlKey || event.metaKey;
 
-        if(isCtrl == true)
+        if (isCtrl == true)
         {
             isValidKey = true;
             thisObject.isDown = false;
         }
 
-		switch(event.keyCode)
-		{
-			case Key.SPACE:
+        switch(event.keyCode)
+        {
+            case Key.SPACE:
                 isValidKey = true;
                 remote.sendRequest(RequestType.PAUSE);
                 $("#pause").toggleClass("#pause active");
-				break;
+                break;
 
             case Key.PLAY:
                 isValidKey = true;
                 remote.sendRequest(RequestType.PLAY);
                 break;
-			case Key.INFO:
+            case Key.INFO:
                 isValidKey = true;
-				remote.sendRequest(RequestType.INFO);
-				break;
+                remote.sendRequest(RequestType.INFO);
+                break;
 
             case Key.CONTEXT:
                 isValidKey = true;
@@ -101,7 +101,7 @@ var Keyboard = function()
 
             case Key.ESCAPE:
                 // back
-                if(popout == 1 && window["chrome"] && window["chrome"].extension)
+                if (popout == 1 && window["chrome"] && window["chrome"].extension)
                 {
                     remote.sendRequest(RequestType.BACK);
                 }
@@ -128,26 +128,26 @@ var Keyboard = function()
                 remote.sendRequest(RequestType.SHOW_OSD);
                 break;
 
-			case Key.LEFT:
-				// left arrow
+            case Key.LEFT:
+                // left arrow
                 isValidKey = true;
                 thisObject.isDown = false;
-				if(isCtrl)
-				{
-					// seek backward
+                if(isCtrl)
+                {
+                    // seek backward
                     remote.sendRequest(RequestType.SEEK_BACK);
-				}
+                }
                 else
                 {
                     $("#leftArrow").addClass("left_arrow_active");
                     remote.sendRequest(RequestType.MOVE_LEFT);
                 }
-				break;
+                break;
 
             case Key.RIGHT:
                 isValidKey = true;
                 thisObject.isDown = false;
-                if(isCtrl)
+                if (isCtrl)
                 {
                     // seek forward
                     remote.sendRequest(RequestType.SEEK_FRONT);
@@ -162,7 +162,7 @@ var Keyboard = function()
             case Key.UP:
                 isValidKey = true;
                 thisObject.isDown = false;
-                if(isCtrl)
+                if (isCtrl)
                 {
                     remote.sendRequest(RequestType.VOLUME_UP);
                 }
@@ -176,7 +176,7 @@ var Keyboard = function()
             case Key.DOWN:
                 isValidKey = true;
                 thisObject.isDown = false;
-                if(isCtrl)
+                if (isCtrl)
                 {
                     remote.sendRequest(RequestType.VOLUME_DOWN);
                 }
@@ -200,14 +200,24 @@ var Keyboard = function()
                 thisObject.isDown = false;
                 remote.sendRequest(RequestType.VOLUME_DOWN);
                 break;
-		}
 
-        if(isValidKey == true)
+            case Key.SKIP_NEXT:
+                isValidKey = true;
+                remote.sendRequest(RequestType.SKIP_NEXT);
+                break;
+
+            case Key.SKIP_PREVIOUS:
+                isValidKey = true;
+                remote.sendRequest(RequestType.SKIP_PREVIOUS);
+                break;
+        }
+
+        if (isValidKey == true)
         {
             event.preventDefault();
         }
 
-	};
+    };
 
     /**
      * remove listeners
@@ -217,7 +227,7 @@ var Keyboard = function()
         document.onkeydown = null;
         document.onkeyup = null;
     };
-	
+
 };
 
 var Remote = function()
@@ -242,7 +252,7 @@ var Remote = function()
         console.log("remote, onMessage " + data);
 
         var paramsData = { type : "", value: ""};
-        if(data.params)
+        if (data.params)
         {
             paramsData = data.params.data;
         }
@@ -276,7 +286,7 @@ var Remote = function()
             event.preventDefault();
             document.activeElement.blur();
 
-            if(event.handled !== true) {
+            if (event.handled !== true) {
 
                 // vibrate for button touch
                 if("vibrate" in navigator && event.type == "touchend")
@@ -374,22 +384,14 @@ var Remote = function()
 
         thisObject.bindFastClick($("#prevTrack"), function(event)
         {
-            var params = { action: "skipprevious" };
-            xbmcSocket.send("Input.ExecuteAction", params);
-            //event.preventDefault();
+            thisObject.sendRequest(RequestType.SKIP_PREVIOUS);
         });
 
         thisObject.bindFastClick($("#nextTrack"), function(event)
         {
-            var params = { action: "skipnext" };
-            xbmcSocket.send("Input.ExecuteAction", params);
-            //event.preventDefault();
+            thisObject.sendRequest(RequestType.SKIP_NEXT);
         });
 
-        thisObject.bindFastClick($("#power"), function(event)
-        {
-            thisObject.sendRequest(RequestType.SHUTDOWN);
-        });
 
         thisObject.bindFastClick($("#mute"),function(event)
         {
@@ -411,6 +413,47 @@ var Remote = function()
             thisObject.showSendTextPanel();
         });
 
+        thisObject.bindFastClick($("#power"), function(event)
+        {
+            thisObject.showShutDownPanel();
+        });
+
+        ///// shutdown panel ////
+        thisObject.bindFastClick($("#cancelButton-shutDownPanel"), function(event)
+        {
+            thisObject.hideShutDownPanel();
+        });
+
+        thisObject.bindFastClick($("#restartButton-shutDownPanel"), function(event)
+        {
+            thisObject.hideShutDownPanel();
+            thisObject.sendRequest(RequestType.RESTART);
+        });
+
+        thisObject.bindFastClick($("#shutDownButton-shutDownPanel"), function(event)
+        {
+            thisObject.hideShutDownPanel();
+            thisObject.sendRequest(RequestType.SHUTDOWN);
+        });
+
+        thisObject.bindFastClick($("#quitButton-shutDownPanel"), function(event)
+        {
+            thisObject.hideShutDownPanel();
+            thisObject.sendRequest(RequestType.QUIT);
+        });
+
+        thisObject.bindFastClick($("#suspendButton-shutDownPanel"), function(event)
+        {
+            thisObject.hideShutDownPanel();
+            thisObject.sendRequest(RequestType.SUSPEND);
+        });
+
+        thisObject.bindFastClick($("#hibernateButton-shutDownPanel"), function(event)
+        {
+            thisObject.hideShutDownPanel();
+            thisObject.sendRequest(RequestType.HIBERNATE);
+        });
+
 
         //////// send text /////////////////
         thisObject.bindFastClick($("#sendTextDataButton"), function(event)
@@ -424,16 +467,30 @@ var Remote = function()
 
         });
 
+        $('#sendTeatArea').keypress(function (event)
+        {
+
+            var sendText = document.getElementById("sendTeatArea").value;
+            var params;
+
+            // enter key
+            if (event.which == Key.ENTER)
+            {
+                params = { text: sendText, done: true };
+                xbmcSocket.send("Input.SendText", params);
+
+                return false;
+            }
+        });
+
         thisObject.bindFastClick($("#backDataButton"), function(event)
         {
             thisObject.hideSendPanel();
 
-            var sendText = document.getElementById("sendTeatArea").value;
+            var sendText = ""; //document.getElementById("sendTeatArea").value;
 
             var params = { text: sendText, done: true };
             xbmcSocket.send("Input.SendText", params);
-            //thisObject.sendRequest(RequestType.EXECUTE_CLOSE);
-
         });
 
 
@@ -458,9 +515,6 @@ var Remote = function()
 
             var params = { text: sendPassword, done: true };
             xbmcSocket.send("Input.SendText", params);
-
-            //thisObject.sendRequest(RequestType.EXECUTE_CLOSE);
-
         });
 
         ///////////////////////////////////
@@ -468,7 +522,30 @@ var Remote = function()
         $("#power").addClass("power_on");
         $("#power").removeClass("power_off");
 
+        // show media display name
+        localData.getMediaList(thisObject.onMediaListReceived);
+
         window.onbeforeunload = thisObject.closeSocket;
+    };
+
+    this.onMediaListReceived = function(mediaRawData)
+    {
+        if (mediaRawData == undefined || mediaRawData == "")
+            return;
+
+
+        var mediaListJSON = JSON.parse(mediaRawData);
+        var mediaList = mediaListJSON.mediaList;
+        for(var i = 0; i < mediaList.length; i++)
+        {
+            if(connectionDetails.host == mediaList[i].host && connectionDetails.port == mediaList[i].port)
+            {
+                // found
+                console.log("found.. " + mediaList[i].displayName);
+                document.getElementById("media_display_name").innerHTML = mediaList[i].displayName;
+                break;
+            }
+        }
     };
 
     /**
@@ -481,72 +558,72 @@ var Remote = function()
         switch (type)
         {
             case RequestType.PLAY:
-                    xbmcSocket.send("Player.GetActivePlayers", null, function(data)
+                xbmcSocket.send("Player.GetActivePlayers", null, function(data)
+                {
+                    var obj = JSON.parse(data);
+                    console.log("done");
+                    if (obj.result.length > 0)
                     {
-                        var obj = JSON.parse(data);
-                        console.log("done");
-                        if(obj.result.length > 0)
+                        // in player.. something is playing
+                        for (var i = 0; i < obj.result.length; i++)
                         {
-                            // in player.. something is playing
-                            for(var i = 0; i < obj.result.length; i++)
-                            {
-                                var params = { playerid: obj.result[i].playerid };
-                                xbmcSocket.send("Player.PlayPause", params);
-                            }
-
-
-                        }
-                        else
-                        {
-                            console.log("just select!");
-                            params = { action: "play" };
-                            xbmcSocket.send("Input.ExecuteAction", params);
-                            //xbmcSocket.send("Input.Select");
+                            var params = { playerid: obj.result[i].playerid };
+                            xbmcSocket.send("Player.PlayPause", params);
                         }
 
-                    });
-            break;
+
+                    }
+                    else
+                    {
+                        console.log("just select!");
+                        params = { action: "play" };
+                        xbmcSocket.send("Input.ExecuteAction", params);
+                        //xbmcSocket.send("Input.Select");
+                    }
+
+                });
+                break;
 
             case RequestType.STOP:
-                    xbmcSocket.send("Player.GetActivePlayers", null, function(data)
+                xbmcSocket.send("Player.GetActivePlayers", null, function(data)
+                {
+                    var obj = JSON.parse(data);
+                    console.log("done");
+                    if (obj.result.length > 0)
                     {
-                        var obj = JSON.parse(data);
-                        console.log("done");
-                        if(obj.result.length > 0)
+                        // in player.. something is playing
+                        for (var i = 0; i < obj.result.length; i++)
                         {
-                            // in player.. something is playing
-                            for(var i = 0; i < obj.result.length; i++)
-                            {
-                                var params = { playerid: obj.result[i].playerid };
-                                xbmcSocket.send("Player.Stop", params);
-                            }
-
-
+                            var params = { playerid: obj.result[i].playerid };
+                            xbmcSocket.send("Player.Stop", params);
                         }
 
-                    });
+
+                    }
+
+                });
 
                 break;
 
             case RequestType.PAUSE:
-                    xbmcSocket.send("Player.GetActivePlayers", null, function(data)
+                xbmcSocket.send("Player.GetActivePlayers", null, function(data)
+                {
+                    var obj = JSON.parse(data);
+                    console.log("done");
+                    if (obj.result.length > 0)
                     {
-                        var obj = JSON.parse(data);
-                        console.log("done");
-                        if(obj.result.length > 0)
+                        // in player.. something is playing
+                        for (var i = 0; i < obj.result.length; i++)
                         {
-                            // in player.. something is playing
-                            for(var i = 0; i < obj.result.length; i++)
-                            {
-                                var params = { playerid: obj.result[i].playerid };
-                                xbmcSocket.send("Player.PlayPause", params);
-                            }
-
-
+                            var params = { playerid: obj.result[i].playerid };
+                            xbmcSocket.send("Player.PlayPause", params);
                         }
 
 
-                    });
+                    }
+
+
+                });
 
                 break;
 
@@ -619,13 +696,55 @@ var Remote = function()
                 xbmcSocket.send("System.Shutdown");
                 break;
 
+            case RequestType.RESTART:
+                xbmcSocket.send("System.Reboot");
+                break;
+
+            case RequestType.HIBERNATE:
+                xbmcSocket.send("System.Hibernate");
+                break;
+
+            case RequestType.SUSPEND:
+                xbmcSocket.send("System.Suspend");
+                break;
+
+            case RequestType.QUIT:
+                xbmcSocket.send("Application.Quit");
+                break;
+
             case RequestType.UPDATE_LIBRARY:
                 xbmcSocket.send("VideoLibrary.Scan");
+                break;
+
+            case RequestType.SKIP_NEXT:
+                params = { action: "skipnext" };
+                xbmcSocket.send("Input.ExecuteAction", params);
+                break;
+
+            case RequestType.SKIP_PREVIOUS:
+                params = { action: "skipprevious" };
+                xbmcSocket.send("Input.ExecuteAction", params);
                 break;
 
         }
 
     };
+
+    this.showShutDownPanel = function()
+    {
+        $("#main, #footer").fadeTo("fast", 0.1).promise().done(function()
+        {
+            $("#shutdown_panel").show();
+
+        });
+    };
+
+    this.hideShutDownPanel = function()
+    {
+        $("#shutdown_panel").hide();
+        $("#main, #footer").fadeTo("fast", 1);
+    };
+
 
     this.showSendTextPanel = function(value)
     {
@@ -634,7 +753,7 @@ var Remote = function()
             $("#send_text_panel").show();
             var sendTextArea = document.getElementById("sendTeatArea");
             sendTextArea.value = "";
-            if(value != undefined)
+            if (value != undefined)
             {
                 console.log("send text, " + value);
                 sendTextArea.value = value;
@@ -644,6 +763,7 @@ var Remote = function()
         });
     };
 
+
     this.showSendPasswordPanel = function(value)
     {
         $("#main, #footer").fadeTo("fast", 0.1).promise().done(function()
@@ -651,7 +771,7 @@ var Remote = function()
             $("#send_pwd_panel").show();
             var passwordInput = document.getElementById("sendPasswordInput");
             passwordInput.value = "";
-            if(value != undefined)
+            if (value != undefined)
             {
                 console.log("password, " + value);
                 passwordInput.value = value;
@@ -672,9 +792,12 @@ var Remote = function()
     this.localDataChanged = function(host, port)
     {
         console.log("local data changed, " + host + ", " + port);
-        if(xbmcSocket)
+        if (xbmcSocket)
         {
             xbmcSocket.disconnect();
+            connectionDetails.host = host;
+            connectionDetails.port = port;
+
             xbmcSocket.connect(host, port, remote);
         }
         else
@@ -766,6 +889,7 @@ var localData = new LocalData(remote);
 var popout = 0;
 var background;
 
+var connectionDetails = {"host" : null, "port": 9090};
 
 ////////////////
 
@@ -780,7 +904,7 @@ function onContextMenu(event)
 function loadComplete()
 {
 
-    if(window["chrome"] && window["chrome"].extension)
+    if (window["chrome"] && window["chrome"].extension)
     {
         console.log("chrome extension");
         background = chrome.extension.getBackgroundPage();
@@ -793,7 +917,7 @@ function loadComplete()
         event.stopPropagation();
         event.preventDefault();
 
-        if(event.handled !== true) {
+        if (event.handled !== true) {
 
             window.location.href = "settings.html?popout=" + popout;
             event.handled = true;
@@ -805,18 +929,18 @@ function loadComplete()
 
     $("#popOut").hide();
 
-    if(ALLOW_POPOUT)
+    if (ALLOW_POPOUT)
     {
         var loc = window.location.toString();
         console.log("loc, " + loc);
         popout = Utils.findPropertyFromString(loc, "popout");
 
-        if(popout == undefined)
+        if (popout == undefined)
         {
             popout = 0;
         }
 
-        if(popout == 0)
+        if (popout == 0)
         {
             $("#popOut").show();
             $("#popOut").click(showPopoutWindow);
@@ -835,14 +959,14 @@ function loadComplete()
 
 function showPopoutWindow(event)
 {
-    if(background)
+    if (background)
     {
         background.handlePopup();
     }
 
     window.close();
 
-    if(event) {
+    if (event) {
         event.preventDefault();
     }
 }
@@ -854,26 +978,28 @@ function onContentDragged(e)
 
 function connect()
 {
-    if(xbmcSocket)
+    if (xbmcSocket)
     {
         localData.getHostName(function(hostName)
         {
             var loc = window.location.toString();
             var removeCheck = Utils.findPropertyFromString(loc, "removecheck");
             console.log("hostname, " + hostName);
-            if(hostName)
+            if (hostName)
             {
                 localData.getPort(function(port)
                 {
 
                     console.log("port, " + port);
-                    if(port)
+                    if (port)
                     {
+                        connectionDetails.host = hostName;
+                        connectionDetails.port = port;
                         xbmcSocket.connect(hostName, port, remote);
                     }
                     else
                     {
-                        if(removeCheck != 1)
+                        if (removeCheck != 1)
                         {
                             window.location.href = "settings.html?popout=" + popout;
                         }
@@ -884,7 +1010,7 @@ function connect()
             }
             else
             {
-                if(removeCheck != 1)
+                if (removeCheck != 1)
                 {
                     window.location.href = "settings.html?popout=" + popout;
                 }

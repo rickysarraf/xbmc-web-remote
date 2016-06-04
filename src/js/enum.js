@@ -2,15 +2,14 @@
  * @author: Karthik VJ
  */
 
-var PORT_DEFAULT = 9090;
-
 // enable / disable console log
-var ENABLE_CONSOLE = true;
+var ENABLE_CONSOLE = false;
 
 // time delay to try reconnection when disconnected
 var RECONNECT_TIME_DELAY = 5000; // milliseconds
 
 // used only in chrome extension, value is set in ant task
+// Nb! disabled this feature now, not really that useful feature. And permission description is a bit creepy!
 var ALLOW_POPOUT = @allow_popout;
 
 // this message is shown when user tries to connect with typical HTTP port
@@ -27,6 +26,9 @@ var Key = new function()
     this.ENTER = 13;
     this.ESCAPE = 27;
     this.CTRL = 17;
+
+    this.SKIP_NEXT = 221;
+    this.SKIP_PREVIOUS = 219;
 
     this.INFO = 73; // i
     this.STOP = 88; // x
@@ -60,9 +62,11 @@ var SettingsElementID = new function()
 
     this.IP_TEXTFIELD = "ipValue";
     this.PORT_TEXTFIELD = "portValue";
+    this.DISPLAY_NAME_TEXTFIELD = "displayNameValue";
 
     this.SAVE_BUTTON = "saveButton";
     this.BACK_BUTTON = "backButton";
+    this.DELTE_BUTTON = "deleteButton";
 };
 
 var RequestType = new function()
@@ -85,11 +89,18 @@ var RequestType = new function()
     this.SEEK_BACK = "seek_back";
     this.SEEK_FRONT = "seek_front";
 
+    this.SKIP_NEXT = "skip_next";
+    this.SKIP_PREVIOUS = "skip_previous";
+
     this.VOLUME_UP = "volume_up";
     this.VOLUME_DOWN = "volume_down";
 
     this.UPDATE_LIBRARY = "update_library";
 
     this.SHUTDOWN = "shutdown";
+    this.RESTART = "restart";
+    this.HIBERNATE = "hibernate";
+    this.SUSPEND = "suspend";
+    this.QUIT = "quit";
 };
 

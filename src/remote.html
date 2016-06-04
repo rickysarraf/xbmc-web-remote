@@ -88,10 +88,47 @@
                     </div>
                 </div>
             </div>
+
+            <div id="shutdown_panel" style="margin: auto; text-align: center;">
+                <div class="button_holder" style="  padding-left: 45px; padding-top:40px;">
+
+                    <div class="action_button" style="float: none; display: block;">
+                        <button class="holo-button" id="quitButton-shutDownPanel" style="width: 180px;">Quit/Exit</button>
+                    </div>
+
+                    <div class="action_button" style="float: none; display: block;">
+                        <button class="holo-button" id="shutDownButton-shutDownPanel" style="width: 180px;">Shutdown</button>
+                    </div>
+
+                    <div class="action_button" style="float: none; display: block;">
+                        <button class="holo-button" id="restartButton-shutDownPanel" style="width: 180px;">Restart</button>
+                    </div>
+
+                    <div class="action_button" style="float: none; display: block;">
+                        <button class="holo-button" id="suspendButton-shutDownPanel" style="width: 180px;">Suspend</button>
+                    </div>
+
+                    <div class="action_button" style="float: none; display: block;">
+                        <button class="holo-button" id="hibernateButton-shutDownPanel" style="width: 180px;">Hibernate</button>
+                    </div>
+
+
+                    <br><br><br>
+                    <div class="action_button" style="float: none; display: block;">
+                        <button class="holo-button" id="cancelButton-shutDownPanel" style="width: 180px;">Cancel</button>
+                    </div>
+
+                </div>
+            </div>
+
             <div id="main">
                 <div class="control_0">
                     <div id="power" class="power_off" title="Shutdown System">
                         <div class="power_icon"></div>
+                    </div>
+
+                    <div id="media_display_name">
+
                     </div>
 
 
@@ -106,25 +143,25 @@
 
                 </div>
                 <div class="control_1">
-                    <div id="backward" title="[Ctrl + Left Arrow] keys">
+                    <div id="backward" title="Ctrl + Left Arrow">
                         <div class="backward_icon"></div>
                     </div>
                     <div class="gap"></div>
-                    <div id="play" title="[P] Key">
+                    <div id="play" title="P">
                         <div class="play_icon"></div>
                     </div>
                     <div class="gap"></div>
-                    <div id="forward" title="[Ctrl + Right Arrow] keys">
+                    <div id="forward" title="Ctrl + Right Arrow">
                         <div class="forward_icon"></div>
                     </div>
                 </div>
 
                 <div class="control_1_1">
-                    <div id="prevTrack">
+                    <div id="prevTrack" title="[">
                         <div class="prevTrack_icon"></div>
                     </div>
                     <div class="gap"></div>
-                    <div id="stop" title="[X] Key">
+                    <div id="stop" title="X">
                         <div class="stop_icon"></div>
                     </div>
                     <div class="gap"></div>
@@ -132,7 +169,7 @@
                         <div class="pause_icon"></div>
                     </div>
                     <div class="gap"></div>
-                    <div id="nextTrack">
+                    <div id="nextTrack" title="]">
                         <div class="nextTrack_icon"></div>
                     </div>
                 </div>
@@ -141,7 +178,7 @@
                     <div class="sub_control_1">
                         <div class="sub_whole">
                             <div class="sub_title">Player</div>
-                            <div id="osd" class="sub_circle" title="[Z] Key"></div>
+                            <div id="osd" class="sub_circle" title="Z"></div>
 
                         </div>
                         <div class="gap_sub"></div>
@@ -151,7 +188,7 @@
                         <div class="gap_sub"></div>
                         <div class="sub_whole">
                             <div class="sub_title">Info</div>
-                            <div id="info" class="sub_circle" title="[I] Key"></div>
+                            <div id="info" class="sub_circle" title="I"></div>
                         </div>
                     </div>
 
@@ -172,7 +209,7 @@
                     <div class="sub_control_1">
                         <div class="sub_whole">
                             <div class="sub_top_gap"></div>
-                            <div id="menu" class="sub_circle" title="[H] Key"></div>
+                            <div id="menu" class="sub_circle" title="H"></div>
                             <div class="sub_top_gap"></div>
                             <div class="sub_title">Menu</div>
                         </div>
@@ -221,7 +258,7 @@
 
                     <div class="sub_whole">
                         <div class="sub_top_gap"></div>
-                        <div id="context_menu" class="sub_circle" title="[Ctrl + O] keys"></div>
+                        <div id="context_menu" class="sub_circle" title="Ctrl + O"></div>
                         <div class="sub_top_gap"></div>
                         <div class="sub_title_2">Context Menu</div>
                     </div>
